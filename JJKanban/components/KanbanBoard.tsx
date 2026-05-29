@@ -24,6 +24,12 @@ import type { DataverseService } from "../services/DataverseService";
 import { buildCards, groupByLane } from "../services/grouping";
 import { computeDropUpdates } from "../services/sorting";
 
+// Flip to true for verbose drag/paging diagnostics in the browser console.
+const DEBUG = false;
+const dbg = (...args: unknown[]): void => {
+  if (DEBUG) dbg(...args);
+};
+
 export interface KanbanBoardProps {
   context: ComponentFramework.Context<IInputs>;
   config: KanbanConfig;
@@ -66,7 +72,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ context, config, datav
       appliedPageSizeRef.current = current;
       return;
     }
-    console.log(`[JJ Kanban] increasing pageSize ${current} → ${requestedPageSize}, refreshing dataset`);
+    dbg(`[JJ Kanban] increasing pageSize ${current} → ${requestedPageSize}, refreshing dataset`);
     paging.setPageSize(requestedPageSize);
     appliedPageSizeRef.current = requestedPageSize;
     try {
@@ -86,7 +92,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ context, config, datav
   // Surface paging state so we can see if hasNextPage / totalResultCount are populated
   // and react properly when Load more is clicked.
   React.useEffect(() => {
-    console.log(
+    dbg(
       `[JJ Kanban] paging state — pageSize=${paging?.pageSize} loaded=${loadedCount} total=${totalCount} hasNextPage=${hasNextPage} loading=${isLoading}`,
     );
   }, [paging?.pageSize, loadedCount, totalCount, hasNextPage, isLoading]);
@@ -99,13 +105,13 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ context, config, datav
     try {
       if (pg.hasNextPage && typeof pg.loadNextPage === "function") {
         // Preferred: append the next page.
-        console.log("[JJ Kanban] loadNextPage()");
+        dbg("[JJ Kanban] loadNextPage()");
         pg.loadNextPage();
       } else {
         // Fallback: enlarge the page window and refresh.
         const current = pg.pageSize ?? requestedPageSize;
         const next = current + 100;
-        console.log(`[JJ Kanban] enlarging pageSize ${current} → ${next} + refresh`);
+        dbg(`[JJ Kanban] enlarging pageSize ${current} → ${next} + refresh`);
         pg.setPageSize(next);
         appliedPageSizeRef.current = next;
         (dataset as any).refresh?.();
@@ -156,7 +162,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ context, config, datav
     // Honest limitation: BPF stage moves are not yet persisted as real stage transitions.
     if (config.swimlaneSourceType === "bpfstage") {
       parts.push(
-        "Business Process Flow stages are shown read-only in this version — dragging will not move the process stage.",
+        "Business Process Flow stages are read-only in this version — cards aren't draggable on a BPF-stage board.",
       );
     }
 
@@ -185,7 +191,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ context, config, datav
     document.body.classList.add("jj-kanban-dragging");
     const card = cards.find((c) => c.id === id);
     if (card) dragOriginRef.current = { id: card.id, laneKey: card.laneKey };
-    console.log(
+    dbg(
       `[JJ Kanban] dragstart id=${id} fromLane=${card?.laneKey ?? "?"} title="${card?.title ?? ""}"`,
     );
   };
@@ -248,7 +254,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ context, config, datav
       return;
     }
     if (!targetLaneKey) {
-      console.log("[JJ Kanban] dragend: dropped outside any lane — rolling back");
+      dbg("[JJ Kanban] dragend: dropped outside any lane — rolling back");
       // Cancel the optimistic lane change we may have set in onDragOver.
       const origin = dragOriginRef.current;
       if (origin && origin.id === cardId) {
@@ -287,14 +293,14 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ context, config, datav
       const idx = targetLaneFull.findIndex((c) => c.id === overId);
       if (idx >= 0) targetIndex = idx;
     }
-    console.log(`[JJ Kanban] drop → targetIndex=${targetIndex} (lane length=${targetLaneFull.length})`);
+    dbg(`[JJ Kanban] drop → targetIndex=${targetIndex} (lane length=${targetLaneFull.length})`);
 
     // Without a sortColumn, only lane-changes are persisted (no manual reorder).
     // Detect no-op against the ORIGINAL lane (not the optimistic-applied one).
     const origin = dragOriginRef.current;
     if (!config.sortColumn) {
       if (origin && origin.id === cardId && origin.laneKey === targetLaneKey) {
-        console.log("[JJ Kanban] dragend: same lane, no sortColumn — no-op");
+        dbg("[JJ Kanban] dragend: same lane, no sortColumn — no-op");
         // roll back the dragOver-induced optimistic lane change if any
         setOptimistic((s) => {
           const copy = { ...s };
@@ -309,13 +315,13 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ context, config, datav
     let updates: { id: string; sortValue?: number; isMover: boolean }[];
     if (config.sortColumn) {
       const result = computeDropUpdates(targetLaneCards, targetIndex, card.id);
-      console.log(`[JJ Kanban] drop mode=${result.mode}, ${result.updates.length} update(s)`);
+      dbg(`[JJ Kanban] drop mode=${result.mode}, ${result.updates.length} update(s)`);
       updates = result.updates;
     } else {
       updates = [{ id: card.id, isMover: true }];
     }
 
-    console.log(
+    dbg(
       `[JJ Kanban] moving "${card.title}" → lane=${lane.label} idx=${targetIndex}; ` +
         `renumbering ${updates.length} card(s)`,
     );
@@ -359,7 +365,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ context, config, datav
           return dataverse.updateRecord(config.entityName, u.id, payload);
         }),
       );
-      console.log(`[JJ Kanban] backend update OK for ${card.id}`);
+      dbg(`[JJ Kanban] backend update OK for ${card.id}`);
       onChange();
       // No explicit dataset.refresh — it races with subsequent drags and can re-deliver
       // stale records that overwrite the optimistic state. Dynamics will re-fetch on
@@ -388,7 +394,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ context, config, datav
       // Drop override when real data matches both lane and (if applicable) sort.
       if (real && real.laneKey === entry.laneKey) {
         if (entry.sortValue == null || real.sortValue === entry.sortValue) {
-          console.log(`[JJ Kanban] optimistic cleanup: confirmed ${id} → ${entry.laneKey}`);
+          dbg(`[JJ Kanban] optimistic cleanup: confirmed ${id} → ${entry.laneKey}`);
           return;
         }
       }

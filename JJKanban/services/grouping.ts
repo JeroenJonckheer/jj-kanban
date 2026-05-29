@@ -67,7 +67,8 @@ export function buildCards(dataset: DatasetLike, config: KanbanConfig): BoardCar
       laneRawValue: laneRaw ?? null,
       accentColor: accentSlot ? String(fields[accentSlot.field]?.raw ?? "") : undefined,
       fields,
-      readOnly: false,
+      // BPF active stage is read-only via the dataset API, so disable dragging for it.
+      readOnly: config.swimlaneSourceType === "bpfstage",
       sortValue,
       tooltip,
     };

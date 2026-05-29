@@ -2,7 +2,7 @@
 <manifest>
   <control namespace="Boards"
            constructor="Kanban"
-           version="0.1.31"
+           version="1.0.1"
            display-name-key="JJKanban_Display"
            description-key="JJKanban_Desc"
            control-type="virtual">
