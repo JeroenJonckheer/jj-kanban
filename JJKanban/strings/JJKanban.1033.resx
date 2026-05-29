@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="JJKanban_Display"><value>JJ Kanban</value></data>
+  <data name="JJKanban_Desc"><value>Configurable drag &amp; drop Kanban board for any Dataverse table.</value></data>
+
+  <data name="Records"><value>Records</value></data>
+
+  <data name="SwimlaneColumn_Display"><value>Swimlane column</value></data>
+  <data name="SwimlaneColumn_Desc"><value>Logical name of the column that determines the swimlane (e.g. statuscode, _pp_stage_value, statecode).</value></data>
+
+  <data name="SwimlaneSourceType_Display"><value>Swimlane source type</value></data>
+  <data name="SwimlaneSourceType_Desc"><value>Choose how the swimlane values are resolved.</value></data>
+  <data name="src_choice"><value>Choice (OptionSet)</value></data>
+  <data name="src_status"><value>Status / Status Reason</value></data>
+  <data name="src_lookup"><value>Lookup</value></data>
+  <data name="src_bpf"><value>Business Process Flow stage</value></data>
+  <data name="src_bool"><value>Yes / No</value></data>
+
+  <data name="ConfigRecord_Display"><value>Configuration record</value></data>
+  <data name="ConfigRecord_Desc"><value>Optional name of a jj_kanbanconfig record. When set, swimlane order/labels/colors and card layout come from that record.</value></data>
+
+  <data name="TitleColumn_Display"><value>Card title column</value></data>
+  <data name="TitleColumn_Desc"><value>Defaults to the primary name column when blank.</value></data>
+  <data name="SubtitleColumn_Display"><value>Card subtitle column</value></data>
+  <data name="SubtitleColumn_Desc"><value>Optional. Shown below the title.</value></data>
+  <data name="AccentColorColumn_Display"><value>Card accent color column</value></data>
+  <data name="AccentColorColumn_Desc"><value>Optional. Column with a hex color used as the card accent stripe.</value></data>
+  <data name="TooltipColumn_Display"><value>Card tooltip column</value></data>
+  <data name="TooltipColumn_Desc"><value>Optional. Column whose value is shown when hovering a card. Leave empty to keep the default "Double-click to open" hint. Use a text column (e.g. pp_name) or a lookup (e.g. pp_contact) to show the related record's name. The column must be in the bound view.</value></data>
+  <data name="SortColumn_Display"><value>Manual sort column</value></data>
+  <data name="SortColumn_Desc"><value>Optional. Decimal/float column on the table that stores manual card order. When set, drag &amp; drop also reorders cards within a lane and the new position is persisted to this column.</value></data>
+
+  <data name="PageSize_Display"><value>Records to load</value></data>
+  <data name="PageSize_Desc"><value>How many records the board loads at once. Overrides the subgrid's "Rows" setting. Default 100. A "Load more" button appears if the total exceeds this.</value></data>
+
+  <data name="LaneColors_Display"><value>Lane colors</value></data>
+  <data name="LaneColors_Desc"><value>Auto uses the Choice/Status colors from metadata (neutral grey when none is set). Neutral forces every lane to a calm grey regardless of metadata.</value></data>
+  <data name="lc_auto"><value>Auto (use metadata)</value></data>
+  <data name="lc_neutral"><value>Neutral grey</value></data>
+
+  <data name="Density_Display"><value>Density</value></data>
+  <data name="Density_Desc"><value>Card spacing.</value></data>
+  <data name="dens_compact"><value>Compact</value></data>
+  <data name="dens_comfy"><value>Comfortable</value></data>
+
+  <data name="ThemeMode_Display"><value>Theme mode</value></data>
+  <data name="ThemeMode_Desc"><value>auto follows the host app's theme.</value></data>
+  <data name="theme_auto"><value>Auto</value></data>
+  <data name="theme_light"><value>Light</value></data>
+  <data name="theme_dark"><value>Dark</value></data>
+</root>

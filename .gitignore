@@ -1,0 +1,54 @@
+# ---- dependencies & build output ----
+node_modules/
+out/
+obj/
+bin/
+*.zip
+.tmp/
+.npmrc
+*.log
+generated/
+solution/bin/
+solution/obj/
+
+# ---- editor / tooling ----
+.vs/
+.vscode/
+.qodo/
+.eslintrc.json
+
+# ---- scratch (local only) ----
+.import/
+.probe/
+.enrich/
+
+# ---- test & QA artifacts ----
+coverage/
+test-results/
+playwright-report/
+demo-output/
+demo2-output/
+
+# ---- showcase video clips (publish on pcf.gallery / a GitHub Release, not in the repo) ----
+*.webm
+*.mp4
+*.gif
+
+# ===== Not part of the shipped control (kept locally, excluded from the repo) =====
+# test suite
+test/
+jest.config.js
+**/*.test.ts
+**/*.test.tsx
+# offline e2e + test harness
+e2e/
+harness/
+playwright.config.ts
+# showcase/video tooling
+e2e-demo/
+e2e-demo2/
+playwright.demo.config.ts
+playwright.demo2.config.ts
+# tenant-specific live tests (contain org URL + record GUIDs — never publish)
+e2e-live/
+playwright.live.config.ts

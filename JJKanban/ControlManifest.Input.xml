@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <control namespace="Boards"
+           constructor="Kanban"
+           version="0.1.31"
+           display-name-key="JJKanban_Display"
+           description-key="JJKanban_Desc"
+           control-type="virtual">
+    <external-service-usage enabled="false"></external-service-usage>
+
+    <!-- Bind to any subgrid / view -->
+    <data-set name="records" display-name-key="Records" cds-data-set-options="displayCommandBar:true;displayViewSelector:true">
+    </data-set>
+
+    <!-- Which column drives the swimlanes -->
+    <property name="swimlaneColumn"
+              display-name-key="SwimlaneColumn_Display"
+              description-key="SwimlaneColumn_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="true" />
+
+    <!-- Type of the swimlane source: choice | status | lookup | bpfstage | boolean -->
+    <property name="swimlaneSourceType"
+              display-name-key="SwimlaneSourceType_Display"
+              description-key="SwimlaneSourceType_Desc"
+              of-type="Enum"
+              default-value="choice"
+              usage="input"
+              required="true">
+      <value name="choice" display-name-key="src_choice" description-key="src_choice">choice</value>
+      <value name="status" display-name-key="src_status" description-key="src_status">status</value>
+      <value name="lookup" display-name-key="src_lookup" description-key="src_lookup">lookup</value>
+      <value name="bpfstage" display-name-key="src_bpf" description-key="src_bpf">bpfstage</value>
+      <value name="boolean" display-name-key="src_bool" description-key="src_bool">boolean</value>
+    </property>
+
+    <!-- Optional: name of jj_kanbanconfig record for runtime config -->
+    <property name="configRecordName"
+              display-name-key="ConfigRecord_Display"
+              description-key="ConfigRecord_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false" />
+
+    <!-- Card field bindings (fallback when no config record selected) -->
+    <property name="titleColumn"
+              display-name-key="TitleColumn_Display"
+              description-key="TitleColumn_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false" />
+    <property name="subtitleColumn"
+              display-name-key="SubtitleColumn_Display"
+              description-key="SubtitleColumn_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false" />
+    <property name="accentColorColumn"
+              display-name-key="AccentColorColumn_Display"
+              description-key="AccentColorColumn_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false" />
+
+    <!-- Optional column whose value becomes the card's hover tooltip. Empty = the
+         default "Double-click to open" hint. Set e.g. pp_name to show the record
+         name, or a lookup like pp_contact to show the related record's name. -->
+    <property name="tooltipColumn"
+              display-name-key="TooltipColumn_Display"
+              description-key="TooltipColumn_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false" />
+
+    <!-- Optional decimal/float column that controls manual card order within a lane.
+         When set, users can reorder cards by drag & drop; the new sort value is the
+         midpoint between neighbors. When empty, cards appear in the view's sort order
+         and reordering is disabled. -->
+    <property name="sortColumn"
+              display-name-key="SortColumn_Display"
+              description-key="SortColumn_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false" />
+
+    <!-- Override the subgrid's "Rows" setting — it's usually 4-10 which is useless
+         for a kanban overview. We tell the dataset to load up to pageSize records
+         in one go. When the total is larger, a "Load more" button appears. -->
+    <property name="pageSize"
+              display-name-key="PageSize_Display"
+              description-key="PageSize_Desc"
+              of-type="Whole.None"
+              default-value="100"
+              usage="input"
+              required="false" />
+
+    <!-- Lane colouring: auto = use Choice/Status metadata colours (neutral grey when
+         none set); neutral = force every lane to the neutral grey regardless of metadata. -->
+    <property name="laneColors"
+              display-name-key="LaneColors_Display"
+              description-key="LaneColors_Desc"
+              of-type="Enum"
+              default-value="auto"
+              usage="input"
+              required="false">
+      <value name="auto" display-name-key="lc_auto" description-key="lc_auto">auto</value>
+      <value name="neutral" display-name-key="lc_neutral" description-key="lc_neutral">neutral</value>
+    </property>
+
+    <!-- Visual options -->
+    <property name="density"
+              display-name-key="Density_Display"
+              description-key="Density_Desc"
+              of-type="Enum"
+              default-value="comfortable"
+              usage="input"
+              required="false">
+      <value name="compact" display-name-key="dens_compact" description-key="dens_compact">compact</value>
+      <value name="comfortable" display-name-key="dens_comfy" description-key="dens_comfy">comfortable</value>
+    </property>
+
+    <property name="themeMode"
+              display-name-key="ThemeMode_Display"
+              description-key="ThemeMode_Desc"
+              of-type="Enum"
+              default-value="auto"
+              usage="input"
+              required="false">
+      <value name="auto" display-name-key="theme_auto" description-key="theme_auto">auto</value>
+      <value name="light" display-name-key="theme_light" description-key="theme_light">light</value>
+      <value name="dark" display-name-key="theme_dark" description-key="theme_dark">dark</value>
+    </property>
+
+    <resources>
+      <code path="index.ts" order="1" />
+      <platform-library name="React" version="16.14.0" />
+      <platform-library name="Fluent" version="9.46.2" />
+      <css path="css/JJKanban.css" order="1" />
+      <resx path="strings/JJKanban.1033.resx" version="1.0.0" />
+    </resources>
+
+    <feature-usage>
+      <uses-feature name="WebAPI" required="true" />
+      <uses-feature name="Utility" required="true" />
+    </feature-usage>
+  </control>
+</manifest>
