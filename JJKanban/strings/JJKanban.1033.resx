@@ -40,9 +40,6 @@
   <data name="src_bpf"><value>Business Process Flow stage</value></data>
   <data name="src_bool"><value>Yes / No</value></data>
 
-  <data name="ConfigRecord_Display"><value>Configuration record</value></data>
-  <data name="ConfigRecord_Desc"><value>Optional name of a jj_kanbanconfig record. When set, swimlane order/labels/colors and card layout come from that record.</value></data>
-
   <data name="TitleColumn_Display"><value>Card title column</value></data>
   <data name="TitleColumn_Desc"><value>Defaults to the primary name column when blank.</value></data>
   <data name="SubtitleColumn_Display"><value>Card subtitle column</value></data>

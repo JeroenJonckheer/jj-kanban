@@ -225,16 +225,6 @@ export class DataverseService {
     }
   }
 
-  /** Try to load a jj_kanbanconfig record by name. */
-  async loadConfigRecord(name: string): Promise<any | null> {
-    const safe = name.replace(/'/g, "''");
-    const result = await this.webApi.retrieveMultipleRecords(
-      "jj_kanbanconfig",
-      `?$select=jj_name,jj_entityname,jj_swimlanesource,jj_swimlanes_json,jj_cardlayout_json,jj_theme_json,jj_sourcetype&$filter=jj_name eq '${safe}'&$top=1`,
-    );
-    return result.entities[0] ?? null;
-  }
-
   /** Generic OData GET against the org's Web API root (used for metadata). */
   private async fetchOData(relative: string): Promise<any> {
     const clientUrl = (this.ctx as any).page?.getClientUrl?.() ?? (window as any).Xrm?.Utility?.getGlobalContext?.()?.getClientUrl?.();

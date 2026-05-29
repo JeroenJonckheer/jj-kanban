@@ -1,13 +1,11 @@
 import type { IInputs } from "../generated/ManifestTypes";
 import { NEUTRAL_LANE_COLOR } from "./colors";
 import type { DataverseService } from "./DataverseService";
-import type { CardFieldDef, KanbanConfig, SwimlaneDef, SwimlaneSourceType, ThemeDef } from "./types";
+import type { CardFieldDef, KanbanConfig, SwimlaneSourceType, ThemeDef } from "./types";
 
 /**
- * Resolves the effective KanbanConfig by merging:
- *  1. control manifest properties (lowest priority)
- *  2. metadata from Dataverse (lane labels & default colors)
- *  3. jj_kanbanconfig record (highest priority — wins on conflict)
+ * Resolves the effective KanbanConfig from the control's manifest properties plus
+ * Dataverse metadata (lane labels & default colours).
  */
 export class ConfigService {
   constructor(private dv: DataverseService) {}
@@ -15,12 +13,11 @@ export class ConfigService {
   async resolve(ctx: ComponentFramework.Context<IInputs>, entityName: string): Promise<KanbanConfig> {
     const swimlaneColumn = ctx.parameters.swimlaneColumn?.raw ?? "statuscode";
     const sourceType = (ctx.parameters.swimlaneSourceType?.raw ?? "choice") as SwimlaneSourceType;
-    const configName = ctx.parameters.configRecordName?.raw?.trim();
 
-    // Metadata-derived defaults
+    // Lanes come from the column's metadata (labels + colours).
     const metaLanes = await this.dv.getSwimlaneOptions(entityName, swimlaneColumn, sourceType);
 
-    const fallbackLayout: CardFieldDef[] = [
+    const cardLayout: CardFieldDef[] = [
       { field: ctx.parameters.titleColumn?.raw || "_primary_", slot: "title", format: "text" },
       ...(ctx.parameters.subtitleColumn?.raw
         ? [{ field: ctx.parameters.subtitleColumn.raw, slot: "subtitle" as const, format: "text" as const }]
@@ -30,49 +27,27 @@ export class ConfigService {
         : []),
     ];
 
-    const fallbackTheme: ThemeDef = {
+    const theme: ThemeDef = {
       accent: "#5b21b6",
       cardRadius: 10,
       cardElevation: 1,
       density: (ctx.parameters.density?.raw ?? "comfortable") as "compact" | "comfortable",
     };
 
-    let lanes = metaLanes;
-    let cardLayout = fallbackLayout;
-    let theme = fallbackTheme;
-
-    // Overlay with jj_kanbanconfig record when one is named.
-    if (configName) {
-      try {
-        const rec = await this.dv.loadConfigRecord(configName);
-        if (rec) {
-          const customLanes = safeJson<SwimlaneDef[]>(rec.jj_swimlanes_json);
-          if (customLanes?.length) lanes = mergeLanes(metaLanes, customLanes);
-
-          const customCards = safeJson<CardFieldDef[]>(rec.jj_cardlayout_json);
-          if (customCards?.length) cardLayout = customCards;
-
-          const customTheme = safeJson<ThemeDef>(rec.jj_theme_json);
-          if (customTheme) theme = { ...fallbackTheme, ...customTheme };
-        }
-      } catch (e) {
-        console.warn("[JJ Kanban] config record load failed", e);
-      }
-    }
-
     // Lane colour mode: "neutral" forces every lane to the neutral grey regardless
-    // of metadata; "auto" (default) keeps the resolved colours.
+    // of metadata; "auto" (default) keeps the metadata colours. (Copy before sorting
+    // so the cached metadata array isn't mutated in place.)
     const laneColors = (ctx.parameters as any).laneColors?.raw ?? "auto";
-    let finalLanes = lanes.sort((a, b) => a.order - b.order);
+    let swimlanes = [...metaLanes].sort((a, b) => a.order - b.order);
     if (laneColors === "neutral") {
-      finalLanes = finalLanes.map((l) => ({ ...l, color: NEUTRAL_LANE_COLOR }));
+      swimlanes = swimlanes.map((l) => ({ ...l, color: NEUTRAL_LANE_COLOR }));
     }
 
     return {
       entityName,
       swimlaneColumn,
       swimlaneSourceType: sourceType,
-      swimlanes: finalLanes,
+      swimlanes,
       cardLayout,
       theme,
       sortColumn: ctx.parameters.sortColumn?.raw?.trim() || undefined,
@@ -96,7 +71,6 @@ export function configSignature(ctx: ComponentFramework.Context<IInputs>): strin
     entity,
     p.swimlaneColumn?.raw ?? "",
     p.swimlaneSourceType?.raw ?? "",
-    p.configRecordName?.raw ?? "",
     p.titleColumn?.raw ?? "",
     p.subtitleColumn?.raw ?? "",
     p.accentColorColumn?.raw ?? "",
@@ -105,31 +79,4 @@ export function configSignature(ctx: ComponentFramework.Context<IInputs>): strin
     p.laneColors?.raw ?? "",
     p.density?.raw ?? "",
   ].join("|");
-}
-
-function safeJson<T>(s: string | undefined | null): T | null {
-  if (!s) return null;
-  try {
-    return JSON.parse(s) as T;
-  } catch {
-    return null;
-  }
-}
-
-/** Merge metadata-derived lanes with config overrides keyed on value. */
-function mergeLanes(meta: SwimlaneDef[], overrides: SwimlaneDef[]): SwimlaneDef[] {
-  const byVal = new Map(meta.map((l) => [String(l.value), l]));
-  const merged: SwimlaneDef[] = [];
-  overrides.forEach((o, i) => {
-    const baseline = byVal.get(String(o.value));
-    merged.push({
-      ...baseline,
-      ...o,
-      order: o.order ?? i,
-    });
-    byVal.delete(String(o.value));
-  });
-  // Append any lanes from metadata that the user did not configure (so nothing is lost).
-  byVal.forEach((l) => merged.push({ ...l, order: merged.length }));
-  return merged;
 }

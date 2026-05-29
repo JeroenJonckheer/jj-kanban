@@ -35,15 +35,7 @@
       <value name="boolean" display-name-key="src_bool" description-key="src_bool">boolean</value>
     </property>
 
-    <!-- Optional: name of jj_kanbanconfig record for runtime config -->
-    <property name="configRecordName"
-              display-name-key="ConfigRecord_Display"
-              description-key="ConfigRecord_Desc"
-              of-type="SingleLine.Text"
-              usage="input"
-              required="false" />
-
-    <!-- Card field bindings (fallback when no config record selected) -->
+    <!-- Card field bindings -->
     <property name="titleColumn"
               display-name-key="TitleColumn_Display"
               description-key="TitleColumn_Desc"

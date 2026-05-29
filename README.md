@@ -67,7 +67,6 @@ turn it into a board.
 | `laneColors` | | `auto` (metadata colours) or `neutral`. |
 | `density` | | `comfortable` or `compact`. |
 | `themeMode` | | `auto` · `light` · `dark`. |
-| `configRecordName` | | (Optional) name of a `jj_kanbanconfig` record for runtime configuration. |
 
 ## Install
 
