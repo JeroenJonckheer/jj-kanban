@@ -10,6 +10,7 @@ bin/
 generated/
 solution/bin/
 solution/obj/
+solution/src/WebResources/
 
 # ---- editor / tooling ----
 .vs/
