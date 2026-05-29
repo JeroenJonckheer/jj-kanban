@@ -2,12 +2,16 @@
 
 # JJ Kanban
 
-### Turn any Dataverse table into a beautiful, drag-and-drop Kanban board — no code.
+### Drag your Dynamics 365 records from lane to lane — any Dataverse table becomes a live, no-code Kanban board.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f.svg)](LICENSE)
 [![Power Platform](https://img.shields.io/badge/Power%20Platform-PCF%20control-742774.svg)](https://learn.microsoft.com/power-apps/developer/component-framework/overview)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Made by Jeroen Jonckheer](https://img.shields.io/badge/made%20by-Jeroen%20Jonckheer-14b8a6.svg)](https://www.platformpower.nl)
+
+![JJ Kanban — the same control as a project task board and a sales-leads board](media/jj-kanban-demo.gif)
+
+*One control, two boards: a project task board and a sales-leads pipeline — drag to update, saved straight to Dataverse.*
 
 A configurable **Kanban board** for Microsoft Dynamics 365 / Dataverse, built as a
 **PCF (Power Apps Component Framework)** dataset control. Bind it to any view — on a form or a
@@ -15,13 +19,6 @@ dashboard — drag records between swimlanes, reorder within a lane, and every c
 straight back to Dataverse.
 
 </div>
-
-## Demo
-
-<video src="https://github.com/JeroenJonckheer/jj-kanban/raw/main/media/jj-kanban-demo.webm" controls width="100%"></video>
-
-> The **same control**, configured first as a project **task board**, then as a **sales-leads** board.
-> ▶︎ If the player doesn't load, [watch the clip here](media/jj-kanban-demo.webm).
 
 ## What you can build
 

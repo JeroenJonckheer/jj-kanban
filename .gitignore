@@ -30,10 +30,10 @@ playwright-report/
 demo-output/
 demo2-output/
 
-# ---- showcase video clips (publish on pcf.gallery / a GitHub Release, not in the repo) ----
+# ---- big source video clips (publish on pcf.gallery / a GitHub Release, not in the repo) ----
+# NB: media/*.gif (the README demo) IS committed.
 *.webm
 *.mp4
-*.gif
 
 # ===== Not part of the shipped control (kept locally, excluded from the repo) =====
 # test suite
