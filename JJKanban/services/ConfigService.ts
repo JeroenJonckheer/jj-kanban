@@ -46,13 +46,13 @@ export class ConfigService {
       try {
         const rec = await this.dv.loadConfigRecord(configName);
         if (rec) {
-          const customLanes = safeJson<SwimlaneDef[]>(rec.pp_swimlanes_json);
+          const customLanes = safeJson<SwimlaneDef[]>(rec.jj_swimlanes_json);
           if (customLanes?.length) lanes = mergeLanes(metaLanes, customLanes);
 
-          const customCards = safeJson<CardFieldDef[]>(rec.pp_cardlayout_json);
+          const customCards = safeJson<CardFieldDef[]>(rec.jj_cardlayout_json);
           if (customCards?.length) cardLayout = customCards;
 
-          const customTheme = safeJson<ThemeDef>(rec.pp_theme_json);
+          const customTheme = safeJson<ThemeDef>(rec.jj_theme_json);
           if (customTheme) theme = { ...fallbackTheme, ...customTheme };
         }
       } catch (e) {

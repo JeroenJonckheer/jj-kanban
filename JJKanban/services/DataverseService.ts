@@ -230,7 +230,7 @@ export class DataverseService {
     const safe = name.replace(/'/g, "''");
     const result = await this.webApi.retrieveMultipleRecords(
       "jj_kanbanconfig",
-      `?$select=pp_name,pp_entityname,pp_swimlanesource,pp_swimlanes_json,pp_cardlayout_json,pp_theme_json,pp_sourcetype&$filter=pp_name eq '${safe}'&$top=1`,
+      `?$select=jj_name,jj_entityname,jj_swimlanesource,jj_swimlanes_json,jj_cardlayout_json,jj_theme_json,jj_sourcetype&$filter=jj_name eq '${safe}'&$top=1`,
     );
     return result.entities[0] ?? null;
   }

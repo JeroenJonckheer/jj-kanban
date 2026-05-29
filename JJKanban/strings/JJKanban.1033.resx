@@ -30,7 +30,7 @@
   <data name="Records"><value>Records</value></data>
 
   <data name="SwimlaneColumn_Display"><value>Swimlane column</value></data>
-  <data name="SwimlaneColumn_Desc"><value>Logical name of the column that determines the swimlane (e.g. statuscode, _pp_stage_value, statecode).</value></data>
+  <data name="SwimlaneColumn_Desc"><value>Logical name of the column that determines the swimlane (e.g. statuscode, statecode, or a stage/lookup column).</value></data>
 
   <data name="SwimlaneSourceType_Display"><value>Swimlane source type</value></data>
   <data name="SwimlaneSourceType_Desc"><value>Choose how the swimlane values are resolved.</value></data>
@@ -50,7 +50,7 @@
   <data name="AccentColorColumn_Display"><value>Card accent color column</value></data>
   <data name="AccentColorColumn_Desc"><value>Optional. Column with a hex color used as the card accent stripe.</value></data>
   <data name="TooltipColumn_Display"><value>Card tooltip column</value></data>
-  <data name="TooltipColumn_Desc"><value>Optional. Column whose value is shown when hovering a card. Leave empty to keep the default "Double-click to open" hint. Use a text column (e.g. pp_name) or a lookup (e.g. pp_contact) to show the related record's name. The column must be in the bound view.</value></data>
+  <data name="TooltipColumn_Desc"><value>Optional. Column whose value is shown when hovering a card. Leave empty to keep the default "Double-click to open" hint. Use a text column (e.g. the primary name) or a lookup column to show the related record's name. The column must be in the bound view.</value></data>
   <data name="SortColumn_Display"><value>Manual sort column</value></data>
   <data name="SortColumn_Desc"><value>Optional. Decimal/float column on the table that stores manual card order. When set, drag &amp; drop also reorders cards within a lane and the new position is persisted to this column.</value></data>
 

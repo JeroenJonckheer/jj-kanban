@@ -7,6 +7,11 @@ back to Dataverse.
 
 > Control: `jj_Boards.Kanban` · publisher prefix `jj` · virtual React control.
 
+## Demo
+
+[▶︎ Watch the demo clip](media/jj-kanban-demo.webm) — the same control, configured first as a project
+**task board** and then as a **sales-leads** board, showing drag-and-drop across statuses.
+
 ## Features
 
 - **Drag & drop between swimlanes** — moving a card updates the record's status column, with an
@@ -69,7 +74,7 @@ JJ Kanban is free and open source (MIT) — use it, ship it, learn from it.
 policies, a point-and-click configuration UI, theming, or integration with your processes — I take on
 paid customization and support for companies with specific requirements.
 
-**Jeroen Jonckheer** — _contact: add your LinkedIn / email / website here_
+**Jeroen Jonckheer** · [platformpower.nl](https://www.platformpower.nl) · [LinkedIn](https://www.linkedin.com/in/jeroen-jonckheer/) · jeroen.jonckheer@platformpower.nl
 
 ## License
 

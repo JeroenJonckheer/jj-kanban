@@ -64,8 +64,8 @@
               required="false" />
 
     <!-- Optional column whose value becomes the card's hover tooltip. Empty = the
-         default "Double-click to open" hint. Set e.g. pp_name to show the record
-         name, or a lookup like pp_contact to show the related record's name. -->
+         default "Double-click to open" hint. Set the primary name column to show
+         the record name, or a lookup column to show the related record's name. -->
     <property name="tooltipColumn"
               display-name-key="TooltipColumn_Display"
               description-key="TooltipColumn_Desc"
